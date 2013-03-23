@@ -1,0 +1,22 @@
+{
+    "name": "phptypography/phptypography",
+    "type": "library",
+    "description": "PHP Typography is a PHP based solution to greatly improve web typography",
+    "keywords": ["typography"],
+    "homepage": "https://github.com/adamaveray/PHPTypography",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "KINGdesk",
+            "homepage": "http://kingdesk.com/"
+        }
+    ],
+    "require": {
+        "php": ">=5.2.4"
+    },
+    "autoload": {
+        "psr-0" : {
+            "PHPTypography" : "lib/"
+        }
+    }
+}

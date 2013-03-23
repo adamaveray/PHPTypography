@@ -1,4 +1,6 @@
 <?php
+namespace PHPTypography;
+
 /*
 	Project: PHP Typography
 	Project URI: http://kingdesk.com/projects/php-tyography/
@@ -13,13 +15,13 @@
 */
 
 # if used with multibyte language, UTF-8 encoding is required!
-class phpTypography {
+class PHPTypography {
 
 	var $mb = FALSE; //cannot be changed after load
 	var $chr = array();
 	var $settings = array();  // operational attributes
-	var $parsedHTML = array(); // to hold current instance of class parseHTML
-	var $parsedText = array(); // to hold current instance of class parseText
+	var $parsedHTML = array(); // to hold current instance of class ParseHTML
+	var $parsedText = array(); // to hold current instance of class ParseText
 	
 
 	#=======================================================================
@@ -767,10 +769,8 @@ class phpTypography {
 		if( isset($this->settings["ignoreTags"] ) && $isTitle && ( in_array('h1', $this->settings["ignoreTags"]) || in_array('h2', $this->settings["ignoreTags"]) ) )
 			return $html;
 		
-		require_once("php-parser/php-parser.php");
-		
 		// parse the html
-		$this->parsedHTML = new parseHTML();
+		$this->parsedHTML = new Parser\ParseHTML();
 		$this->parsedHTML->load($html);
 		$this->parsedHTML->unlock_text();
 		$tagsToIgnore = $this->parsedHTML->get_tags_by_name($this->settings["ignoreTags"]);
@@ -804,7 +804,7 @@ class phpTypography {
 			$unlockedText = $this->unit_spacing($unlockedText);
 
 			//break it down for a bit more granularity
-			$this->parsedText = new parseText();
+			$this->parsedText = new Parser\ParseText();
 			$this->parsedText->load($unlockedText);
 			$parsedMixedWords = $this->parsedText->get_words(-1,0); // prohibit letter only words, allow caps
 			$caps = (isset($this->settings["hyphenateAllCaps"]) && $this->settings["hyphenateAllCaps"]) ? 0 : -1 ;
@@ -852,11 +852,9 @@ class phpTypography {
 
 		if( isset($this->settings["ignoreTags"]) && $isTitle && ( in_array('h1', $this->settings["ignoreTags"]) || in_array('h2', $this->settings["ignoreTags"]) ) )
 			return $html;
-
-		require_once("php-parser/php-parser.php");
 		
 		// parse the html
-		$this->parsedHTML = new parseHTML();
+		$this->parsedHTML = new Parser\ParseHTML();
 		$this->parsedHTML->load($html);
 		$this->parsedHTML->unlock_text();
 		$tagsToIgnore = $this->parsedHTML->get_tags_by_name($this->settings["ignoreTags"]);
@@ -1374,7 +1372,7 @@ class phpTypography {
 				(\d+)
 				(
 					(?:\<sup\>(?:st|nd|rd|th)<\/sup\>)?												# handle ordinals after fractions
-					(?:\Z|\s|$this->chr['noBreakSpace']|$this->chr['noBreakNarrowSpace']|\.|\!|\?|\)|\;|\:|\'|\")			# makes sure we are not messing up a url
+					(?:\Z|\s|".$this->chr['noBreakSpace']."|".$this->chr['noBreakNarrowSpace']."|\.|\!|\?|\)|\;|\:|\'|\")			# makes sure we are not messing up a url
 				)
 			/xu";
 			
@@ -1994,7 +1992,7 @@ class phpTypography {
 		return $wordPattern;
 	}
 	
-	// expecting parseText tokens filtered to words
+	// expecting ParseText tokens filtered to words
 	function hyphenate($parsedTextTokens, $isTitle = FALSE) {
 		if(!isset($this->settings["hyphenation"]) || !$this->settings["hyphenation"]) return $parsedTextTokens;
 

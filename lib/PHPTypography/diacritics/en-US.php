@@ -1,4 +1,5 @@
 <?php
+namespace PHPTypography\Diacritics;
 
 /**
  *	Language: English (United States)

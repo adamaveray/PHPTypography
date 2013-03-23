@@ -1,4 +1,6 @@
 <?php
+namespace PHPTypography\Lang;
+
 /*
 	Project: PHP Typography
 	Project URI: http://kingdesk.com/projects/php-typography/
